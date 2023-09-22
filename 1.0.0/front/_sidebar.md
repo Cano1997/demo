@@ -1,0 +1,23 @@
+* 界面行为
+* 视图
+    * [单数据视图]
+        * [实体编辑视图](/view/singledataview/editview)
+    * [多数据视图]
+        * [实体表格视图](/view/mdview/gridview)
+    * [应用视图]
+        * [首页视图](/view/appview/indexview)
+* 实体行为
+* 界面逻辑
+* 部件
+    * [应用菜单]
+        * [应用菜单](/ctrl/appmenu/menu)
+        * [菜单项](/ctrl/appmenu/menu-item)
+        * [直接内容](/ctrl/appmenu/menu-raw)
+    * [表单]
+        * [表单分组](/ctrl/form/form-group)
+        * [搜索表单](/ctrl/form/search-form)
+        * [表单分页](/ctrl/form/form-page)
+        * [编辑表单](/ctrl/form/edit-form)
+* 编辑器
+    * [基础控件]
+        * [文本输入框](/editor/base-editor/textbox)
