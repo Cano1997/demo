@@ -123,7 +123,9 @@ export default class Pie3D extends Vue {
     renderOut() {
         return <g>
             {this.mappedData.map((item: any) => {
-                return [<pie-path class={item.uuid} on-click={() => this.onClick(item)} on-mouse-enter={() => this.onMouseEnter(item)} on-mouse-leave={() => this.clear()} data={item} pathVariables={this.pathVariables} type='outer' />]
+                return [
+                <pie-path class={item.uuid} on-click={() => this.onClick(item)} on-mouse-enter={() => this.onMouseEnter(item)} on-mouse-leave={() => this.clear()} data={item} pathVariables={this.pathVariables} type="inner" />,
+                <pie-path class={item.uuid} on-click={() => this.onClick(item)} on-mouse-enter={() => this.onMouseEnter(item)} on-mouse-leave={() => this.clear()} data={item} pathVariables={this.pathVariables} type='outer' />]
             })}
         </g>
     }

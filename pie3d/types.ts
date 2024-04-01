@@ -41,16 +41,18 @@ export type Data = number[] | UserData[]
 export type UserData = {
   color?: string
   label?: string
+  title?:string
   value: number
   opacity?: number
 }
 
 export type PieSlice = {
+  title?:string
   color: string
   darkColor: string
   endAngle: number
   index: number
-  label?: string
+  label?: string|Function
   moved: boolean
   percentageValue: number
   startAngle: number

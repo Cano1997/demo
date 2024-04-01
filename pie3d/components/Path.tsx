@@ -80,7 +80,7 @@ export class Path extends Vue {
   public params: any = {};
 
   created() {
-    const { color, darkColor, label, value, percentageValue, moved, middleAngle, endAngle, startAngle } = this.data;
+    const { title, color, darkColor, label, value, percentageValue, moved, middleAngle, endAngle, startAngle } = this.data;
     const { tooltipShowValue, tooltipShowName, rx, ry, height, fixed, moveDistance, tooltipShowPercentage } = this.pathVariables;
     this.params.styles = { fill: color, cursor: 'pointer' }
     if (this.darkColorType.includes(this.type)) {
@@ -90,7 +90,8 @@ export class Path extends Vue {
     }
     this.relativeHeight = height * percentageValue;
     this.params.label = label || '';
-    this.params.tooltipName = tooltipShowName && label !== undefined ? `${label} ` : ''
+    this.params.title = title || '';
+    this.params.tooltipName = tooltipShowName && title !== undefined ? `${title} ` : ''
 
     this.params.tooltipText = `${this.params.tooltipName}${tooltipShowValue ? `:\n${value}` : ''}` +
     `${tooltipShowPercentage ? `:\n${(percentageValue * 100).toFixed(fixed)}%` : ''}`

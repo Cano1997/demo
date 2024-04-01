@@ -2,13 +2,13 @@ import { Util } from 'ibiz-core'
 import { defaultColors, pi } from './const'
 import { PieSlices, UserData } from './types'
 
-export const createEndWallPath = (endAngle: number, rx: number, ry: number, hight: number, ir: number): string => {
+export const createEndWallPath = (endAngle: number, rx: number, ry: number, height: number, ir: number): string => {
   const ex = rx * Math.cos(endAngle)
   const ey = ry * Math.sin(endAngle)
   console.log('createEndWallPath');
   
 
-  return `M ${ir * ex} ${ir * ey} L ${ir * ex} ${ir * ey - hight} L ${ex} ${ey - hight} L ${ex} ${ey} z`
+  return `M ${ir * ex} ${ir * ey} L ${ir * ex} ${ir * ey - height} L ${ex} ${ey - height} L ${ex} ${ey} z`
 }
 
 export const createInnerPath =
@@ -20,8 +20,8 @@ export const createInnerPath =
     const ex = ir * rx * Math.cos(innerEndAngle)
     const ey = ir * ry * Math.sin(innerEndAngle)
 
-    return `M ${sx} ${sy} A ${ir * rx} ${ir * ry} 0 0 1 ${ex} ${ey} L ${ex} ${height + ey} A ${ir * rx} ${ir * ry} ` +
-    `0 0 0 ${sx} ${height + sy} z`
+    return `M ${sx} ${sy} A ${ir * rx} ${ir * ry} 0 0 1 ${ex} ${ey} L ${ex} ${ey - height} A ${ir * rx} ${ir * ry} ` +
+    `0 0 0 ${sx} ${sy - height} z`
   }
 
 const isMiddleAngleRight = (angle: number): boolean => {
@@ -36,6 +36,9 @@ const isMiddleAngleRight = (angle: number): boolean => {
 }
 
 export const getTextWidth = (text: string, size: number): number => {
+  if (!text) {
+    return 0;
+  }
   const canvas = document.createElement('canvas')
   const context = canvas.getContext('2d')
 
@@ -59,7 +62,7 @@ export const createLabelPath = (
   let distance = 20
 
   if (middleAngle >= pi) {
-    distance = 40
+    distance = 20
   }
 
   return {
@@ -72,7 +75,7 @@ export const createLabelPath = (
 }
 
 export const createOuterPath =
-(startAngle: number, endAngle: number, rx: number, ry: number, hight: number): string => {
+(startAngle: number, endAngle: number, rx: number, ry: number, height: number): string => {
   const outerStartAngle = (startAngle > pi ? pi : startAngle)
   const outerEndAngle = (endAngle > pi ? pi : endAngle)
   const sx = rx * Math.cos(outerStartAngle)
@@ -80,30 +83,30 @@ export const createOuterPath =
   const ex = rx * Math.cos(outerEndAngle)
   const ey = ry * Math.sin(outerEndAngle)
 
-  return `M ${sx} ${sy - hight} A ${rx} ${ry} 0 0 1 ${ex} ${ey - hight} L ${ex} ${ey} A ${rx} ${ry} 0 0 0 ${sx} ${sy} z`
+  return `M ${sx} ${sy - height} A ${rx} ${ry} 0 0 1 ${ex} ${ey - height} L ${ex} ${ey} A ${rx} ${ry} 0 0 0 ${sx} ${sy} z`
 }
 
 export const createStartWallPath =
-(startAngle: number, rx: number, ry: number, hight: number, ir: number): string => {
+(startAngle: number, rx: number, ry: number, height: number, ir: number): string => {
   const sx = rx * Math.cos(startAngle)
   const sy = ry * Math.sin(startAngle)
 
-  return `M ${ir * sx} ${ir * sy} L ${ir * sx} ${ir * sy - hight} L ${sx} ${sy - hight} L ${sx} ${sy} z`
+  return `M ${ir * sx} ${ir * sy} L ${ir * sx} ${ir * sy - height} L ${sx} ${sy - height} L ${sx} ${sy} z`
 }
 
-export const createTopPath = (startAngle: number, endAngle: number, rx: number, ry: number, hight: number, ir: number): string => {
+export const createTopPath = (startAngle: number, endAngle: number, rx: number, ry: number, height: number, ir: number): string => {
   if (endAngle - startAngle === 0) {
     return 'M 0 0'
   }
 
   const sx = rx * Math.cos(startAngle)
-  const sy = ry * Math.sin(startAngle) - hight
+  let sy = ry * Math.sin(startAngle)
   const ex = rx * Math.cos(endAngle)
-  const ey = ry * Math.sin(endAngle) - hight
+  let ey = ry * Math.sin(endAngle)
 
-  return `M ${sx} ${sy} A ${rx} ${ry} 0 ${endAngle - startAngle > pi ? 1 : 0} 1 ${ex} ` +
-    `${ey} L ${ir * ex} ${ir * ey - hight} A ${ir * rx} ${ir * ry} 0 ${endAngle - startAngle > pi ? 1 : 0}` +
-    `0 ${ir * sx} ${ir * sy - hight} z`
+  return `M ${sx} ${sy - height} A ${rx} ${ry} 0 ${endAngle - startAngle > pi ? 1 : 0} 1 ${ex} ` +
+    `${ey - height} L ${ir * ex} ${ir * ey - height} A ${ir * rx} ${ir * ry} 0 ${endAngle - startAngle > pi ? 1 : 0}` +
+    `0 ${ir * sx} ${ir * sy - height} z`
 }
 
 export const getMiddleAngle = (startAngle: number, endAngle: number): number =>
@@ -160,6 +163,7 @@ export const mapData = (data: UserData[]): PieSlices => {
         endAngle,
         index,
         label: item.label,
+        title: item.title,
         middleAngle,
         uuid: `pie-item-${Util.createUUID()}`,
         moved: false,

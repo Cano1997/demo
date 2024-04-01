@@ -29,7 +29,10 @@ export class Label extends Vue {
     const value = (this.data.percentageValue * 100).toFixed(fixed)
     this.text = `${this.data.label ?? ''}${this.showLabelPercentage ? `(${value}%)` : ''}`
     this.params =
-    createLabelPath(this.data.middleAngle, rx, ry, relativeHeight, getTextWidth(this.text, this.textSize), this.textSize)
+    createLabelPath(this.data.middleAngle, rx, ry, relativeHeight, getTextWidth(this.data.title || '', this.textSize), this.textSize)
+    if (this.data.label && this.data.label instanceof Function) {
+      this.text = this.data.label(this.params.x,this.params.y);
+    }
   }
 
   render() {
@@ -45,7 +48,9 @@ export class Label extends Vue {
           strokeWidth="1"
           fill='none'
         />
-        <text x={x} y={y} fontSize={this.textSize} style={style} domPropsInnerHTML={this.text}></text>
+        <text x={x} y={y} fontSize={this.textSize} style={style} >
+          {this.text}
+        </text>
       </g>
     )
   }
